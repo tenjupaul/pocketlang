@@ -11,5 +11,5 @@ pool:
 
 steps:
 - script: |
-    build
+    ./build
   displayName: 'build'
