@@ -11,5 +11,6 @@ pool:
 
 steps:
 - script: |
-    ./build
+    pwd
+    ls -l
   displayName: 'build'
