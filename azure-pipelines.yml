@@ -1,4 +1,8 @@
 # C/C++ with GCC
+- task: SynopsysPolaris@1
+  inputs:
+    polarisService: 'csprod polaris'
+    polarisCommand: 'analyze -w'
 # Build your C/C++ project with GCC using make.
 # Add steps that publish test results, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
