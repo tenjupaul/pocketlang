@@ -2905,3 +2905,21 @@ void compilerMarkObjects(PKVM* vm, Compiler* compiler) {
     compilerMarkObjects(vm, compiler->next_compiler);
   }
 }
+
+// // Dereferenced NULL 
+
+int fn(){
+  return NULL;
+}
+
+int forward_null_example1(int *p){
+  int x;
+  if ( p == NULL ) {
+      x = 0;
+  } else {
+      x = *p;
+  }
+  x += fn();
+  *p = x;   // Defect: p is potentially NULL
+  return 0;
+}

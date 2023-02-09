@@ -1791,6 +1791,7 @@ Var varGetSubscript(PKVM* vm, Var on, Var key) {
   if (!IS_OBJ(on)) {
     VM_SET_ERROR(vm, stringFormat(vm, "$ type is not subscriptable.",
                                   varTypeName(on)));
+
     return VAR_NULL;
   }
 
@@ -1861,6 +1862,7 @@ void varsetSubscript(PKVM* vm, Var on, Var key, Var value) {
   if (!IS_OBJ(on)) {
     VM_SET_ERROR(vm, stringFormat(vm, "$ type is not subscriptable.",
                                   varTypeName(on)));
+    
     return;
   }
 
