@@ -38,8 +38,8 @@ jobs:
           cov-build --dir idir build
           
           # cov-run-desktop non MISRA
-          cov-run-desktop --dir idir --url ${{vars.COV_URL}} --user ${{vars.COV_USER}} --password ${{secrets.COV_PASS}} --stream ${{vars.COV_NON-MISRA-STREAM}} --ignore-uncapturable-inputs true --present-in-reference false --exit1-if-defects true ${{ steps.changeset.outputs.added_modified }}
+          cov-run-desktop --dir idir --url ${{vars.COV_URL}} --user ${{vars.COV_USER}} --password ${{secrets.COV_PASS}} --stream ${{vars.COV_NON_MISRA_STREAM}} --ignore-uncapturable-inputs true --present-in-reference false --exit1-if-defects true ${{ steps.changeset.outputs.added_modified }}
           
           # cov-run-desktop MISRA
-          cov-run-desktop --dir idir --url ${{vars.COV_URL}} --user ${{vars.COV_USER}} --password ${{secrets.COV_PASS}} --stream ${{vars.COV_MISRA-STREAM}} --coding-standard-config ${{vars.CODING_STANDARD_PATH}} --ignore-uncapturable-inputs true --present-in-reference false --exit1-if-defects true ${{ steps.changeset.outputs.added_modified }}
+          cov-run-desktop --dir idir --url ${{vars.COV_URL}} --user ${{vars.COV_USER}} --password ${{secrets.COV_PASS}} --stream ${{vars.COV_MISRA_STREAM}} --coding-standard-config ${{vars.CODING_STANDARD_PATH}} --ignore-uncapturable-inputs true --present-in-reference false --exit1-if-defects true ${{ steps.changeset.outputs.added_modified }}
 
