@@ -1,0 +1,45 @@
+name: coverity-scan
+
+on:
+  workflow_dispatch:
+  pull_request:
+  
+jobs:
+  coverity:
+    environment: tenju-windows-desktop
+    runs-on:
+      - self-hosted
+      - cov-windows-desktop
+    
+    steps:
+       - uses: actions/checkout@v3
+       - name: Coverity Full Scan
+         if: ${{ github.event_name != 'pull_request' }}
+         run: |
+        
+          # Coverity Capture
+          cov-build --dir idir build
+          
+          # Coverity Analyze
+          cov-analyze --dir idir --all --webapp-security --distrust-all
+          
+          # Coverity Commit Defects
+          cov-commit-defects --dir idir --url ${{vars.COV_URL}} --stream ${{vars.COV_STREAM}} --user ${{vars.COV_USER}} --password ${{secrets.COV_PASS}}
+
+       - id: changeset
+         name: Get Pull Request Changeset
+         uses: jitterbit/get-changed-files@v1
+         if: ${{ github.event_name == 'pull_request' }}
+         
+       - name: Coverity Incremental Scan
+         if: ${{ github.event_name == 'pull_request' && steps.changeset.outputs.added_modified != '' }}
+         run: |
+          # Coverity Build
+          cov-build --dir idir build
+          
+          # cov-run-desktop non MISRA
+          cov-run-desktop --dir idir --url ${{vars.COV_URL}} --user ${{vars.COV_USER}} --password ${{secrets.COV_PASS}} --stream ${{vars.COV_NON-MISRA-STREAM}} --ignore-uncapturable-inputs true --present-in-reference false --exit1-if-defects true ${{ steps.changeset.outputs.added_modified }}
+          
+          # cov-run-desktop MISRA
+          cov-run-desktop --dir idir --url ${{vars.COV_URL}} --user ${{vars.COV_USER}} --password ${{secrets.COV_PASS}} --stream ${{vars.COV_MISRA-STREAM}} --coding-standard-config ${{vars.CODING_STANDARD_PATH}} --ignore-uncapturable-inputs true --present-in-reference false --exit1-if-defects true ${{ steps.changeset.outputs.added_modified }}
+
